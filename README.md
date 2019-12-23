@@ -8,7 +8,7 @@ To fill
 These are the steps you need to complete before launching the project.
 
 Node modules that need to be install:
-'''
+```
 -npm install
 -npm install express
 -npm install ejs
@@ -18,6 +18,6 @@ Node modules that need to be install:
 -npm install -D typescript
 -npm install --save encoding-down leveldown levelup level-ws
 npm i --save body-parser
-'''
+```
  
  
