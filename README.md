@@ -27,7 +27,7 @@ Next to get to the login page you need to add "/login" at the end of the url: `l
 After that you have two options: 
 
 - to access the signup page, just click on the "Create an account" button. 
-- if you want to acces a "profile" page, in the url type: `localhost8080/hello/[name]`. Just put any name in place of [name].
+- if you want to access a "profile" page, in the url type: `localhost8080/hello/[name]`. Just put any name in place of [name].
 
 In the case of the signup page, after you enter the user information, just click on the "Create an account" button to get back to the login page.
 
