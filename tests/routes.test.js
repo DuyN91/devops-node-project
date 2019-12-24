@@ -6,7 +6,6 @@ const bodyparser = require('body-parser');
 
 const app = express();
 const authRouter = express.Router();
-const userRouter = express.Router();
 
 app.use(authRouter);
 app.use('/user', userRouter);
