@@ -1,5 +1,5 @@
-2019/12/24-19:00:26.631 5d7c Recovering log #292
-2019/12/24-19:00:26.632 5d7c Level-0 table #294: started
-2019/12/24-19:00:26.655 5d7c Level-0 table #294: 186 bytes OK
-2019/12/24-19:00:26.672 5d7c Delete type=0 #292
-2019/12/24-19:00:26.674 5d7c Delete type=3 #290
+2019/12/24-19:57:45.854 5bec Recovering log #295
+2019/12/24-19:57:45.854 5bec Level-0 table #297: started
+2019/12/24-19:57:45.918 5bec Level-0 table #297: 319 bytes OK
+2019/12/24-19:57:45.938 5bec Delete type=0 #295
+2019/12/24-19:57:45.939 5bec Delete type=3 #293

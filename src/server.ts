@@ -28,11 +28,13 @@ app.set('view engine', 'ejs');
 //homepage
 app.get('/', (req: any, res: any) => {
     res.write('Hello world');
+    res.status(200).send();
     res.end();
 });
 
 app.get('/hello/:name', (req, res) => {
     res.render('hello.ejs', {name: req.params.name});
+    res.status(200).send();
 });
 
 //access to metrics
@@ -65,16 +67,19 @@ app.use(session({
 //auth
 authRouter.get('/login', (req: any, res: any) => {
     res.render('login.ejs');
+    res.status(200).send();
 });
   
 authRouter.get('/signup', (req: any, res: any) => {
     res.render('signup.ejs')
+    res.status(200).send();
 });
   
 authRouter.get('/logout', (req: any, res: any) => {
     delete req.session.loggedIn;
     delete req.session.user;
     res.redirect('/login');
+    res.status(200).send();
 });
 
 app.post('/login', (req: any, res: any, next: any) => {
