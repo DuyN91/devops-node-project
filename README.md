@@ -32,7 +32,12 @@ After that you have two options:
 In the case of the signup page, after you enter the user information, just click on the "Create an account" button to get back to the login page.
 
 # DevOps Project
-To fill with list of tests.
+To run the test, first you need to install: `npm install --save-dev jest supertest`.
+Then you need to open your terminal, go to the project folder ans run `npm test`.
+The only test we manage to implement are the routing test, allowing us to know if we get a response from our request.
+We also didn't manage to "link" the server.ts file to the test file and so we add to copy the tested routing function inside the test file (routes.test.js). 
+We suspected a Typescript/Javascript conflict. We try by using Jest with typescript, but it didn't turn out well (`npm install jest @types/jest ts-jest -D`).
+A .travis.yml file has been added to the project to build it on Travis CI.
 
 # NodeJS Project
 We couldn't manage to write user information into the database for a new account. So we were unable to continue the project, we did implement some of the user's password related function please see to it. We counldn't manage to use the UserHandler "get" and "save" function allowing us to use the database.
