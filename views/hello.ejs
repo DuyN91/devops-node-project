@@ -19,7 +19,7 @@
         e.preventDefault();
         $.getJSON("/metrics/<%= name %>", {}, (data) => {
           const content = data.map(d => {
-            return 'timestamp: '+d.timestamp+', value: '+d.value+'';
+            return 'code: '+d.code+', value: '+d.value+'';
           })
           $('#metrics').append(content.join("\n"));
         });

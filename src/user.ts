@@ -6,41 +6,52 @@ export class User {
     public email: string;
     private password: string = "";
   
-    constructor(username: string, email: string, password: string, passwordHashed: boolean = false) {
+    constructor(username: string, email: string, password: string) {
         this.username = username;
         this.email = email;
-  
+        
+        var passwordHashed: boolean = false;
+
         if (!passwordHashed) {
             this.setPassword(password);
-        } else this.password = password
-    }
+        } else {
+            this.password = password;
+        }
+    };
 
     static fromDb(username: string, value: any): User {
         const [password, email] = value.split(":");
         return new User(username, email, password);
-    }
+    };
     
     public setPassword(toSet: string): void {
         // Hash and set password
-    }
+    };
     
     public getPassword(): string {
         return this.password;
-    }
+    };
     
     public validatePassword(toValidate: String): boolean {
         return false;
         // return comparison with hashed password
-    }
+    };
 }
 
 export class UserHandler {
-    public db: any
-  
+    public db: any;
+
+    constructor(path: string) {
+        this.db = LevelDB.open(path)
+    };
+
     public get(username: string, callback: (err: Error | null, result?: User) => void) {
         this.db.get(`user:${username}`, function (err: Error, data: any) {
-            if (err) callback(err)
-            else if (data === undefined) callback(null, data)
+            if (err) {
+                callback(err)
+            } else if (data === undefined) {
+                callback(null, data);
+            }
             callback(null, User.fromDb(username, data));
         });
     };
@@ -52,10 +63,8 @@ export class UserHandler {
     };
   
     public delete(username: string, callback: (err: Error | null) => void) {
-      // TODO
-    };
-  
-    constructor(path: string) {
-        this.db = LevelDB.open(path)
+        this.db.del(username, (err: Error | null) => {
+            callback(err);
+        });
     };
 }

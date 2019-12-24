@@ -8,6 +8,10 @@
             <hr/>
             <form action="/login" method="post">
             <div class="form-group">
+                <label for="form_mail">Mail</label>
+                <input id="form_mail" type="text" name="mail" />
+            </div>
+            <div class="form-group">
                 <label for="form_username">Username</label>
                 <input id="form_username" type="text" name="username" />
             </div>
@@ -17,7 +21,7 @@
             </div>
             </form>
             <hr/>
-            <button class="btn btn-success btn-block" type="submit" href="/signup" onClick='document.location.href="/signup"'>
+            <button class="btn btn-success btn-block" id="new-account" type="submit" href="/signup" onClick='document.location.href="/login"'>
                 Create an account
             </button>
         </div>

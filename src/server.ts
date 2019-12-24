@@ -5,9 +5,12 @@ import bodyparser = require('body-parser');
 import session = require('express-session');
 import levelSession = require('level-session-store');
 import { UserHandler, User } from './user';
+import { stringify } from 'querystring';
 
 const dbUser: UserHandler = new UserHandler('./db/users');
+const dbMet: MetricsHandler = new MetricsHandler('./db/metrics');
 const authRouter = express.Router();
+const userRouter = express.Router();
 const LevelStore = levelSession(session);
 const app = express();
 const port: string = process.env.PORT || '8080';
@@ -15,12 +18,13 @@ const port: string = process.env.PORT || '8080';
 app.use(express.static(path.join(__dirname, "/../public")));
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded());
+app.use(authRouter);
+app.use('/user', userRouter)
 
 app.set('views', __dirname + "/../views");
 app.set('view engine', 'ejs');
 
-const dbMet: MetricsHandler = new MetricsHandler('./db/metrics');
-
+//homepage
 app.get('/', (req: any, res: any) => {
     res.write('Hello world');
     res.end();
@@ -30,6 +34,7 @@ app.get('/hello/:name', (req, res) => {
     res.render('hello.ejs', {name: req.params.name});
 });
 
+//access to metrics
 app.get('/metrics/:id', (req: any, res: any) => {
     MetricsHandler.get((err: Error | null, result?: any) => {
         if (err) {
@@ -73,29 +78,52 @@ authRouter.get('/logout', (req: any, res: any) => {
 
 app.post('/login', (req: any, res: any, next: any) => {
     dbUser.get(req.body.username, (err: Error | null, result?: User) => {
-        if (err) next(err)
+        if (err) {
+            next(err)
+        }
         if (result === undefined || !result.validatePassword(req.body.password)) {
             res.redirect('/login');
         } else {
             req.session.loggedIn = true;
             req.session.user = result;
-            res.redirect('/');
+            res.redirect('/hello/'+result.username);
         }
     });
 });
-  
-app.use(authRouter)
 
-const userRouter = express.Router()
+//signup implementation
+app.post('/signup', (req: any, res: any, next: any) => {
+    dbUser.get(req.body.username, (err: Error | null, result?: User) => {
+        if (err) {
+            console.log('failed from start');
+            next(err);
+        } else {
+            var user = new User(req.body.username, req.body.mail, req.body.password)
+            dbUser.save(user, (err: Error | null) => {
+                if (err) {
+                    console.log('signup failed');
+                    throw err;
+                } else {
+                    res.status(200).send();
+                }
+            });
+            console.log('signup successful');
+        }
+    });
+});
+
 
 userRouter.post('/', (req: any, res: any, next: any) => {
     dbUser.get(req.body.username, function (err: Error | null, result?: User) {
         if (!err || result !== undefined) {
-        res.status(409).send("user already exists")
+            res.status(409).send("user already exists");
         } else {
             dbUser.save(req.body, function (err: Error | null) {
-                if (err) next(err)
-                else res.status(201).send("user persisted")
+                if (err) {
+                    next(err)
+                } else {
+                    res.status(201).send("user persisted");
+                }
             });
         }
     });
@@ -105,16 +133,18 @@ userRouter.get('/:username', (req: any, res: any, next: any) => {
     dbUser.get(req.params.username, function (err: Error | null, result?: User) {
         if (err || result === undefined) {
             res.status(404).send("user not found")
-        } else res.status(200).json(result)
+        } else {
+            res.status(200).json(result)
+        }
     });
 });
-
-app.use('/user', userRouter)
 
 const authCheck = function (req: any, res: any, next: any) {
     if (req.session.loggedIn) {
         next()
-    } else res.redirect('/login')
+    } else {
+        res.redirect('/login')
+    }
 };
   
 app.get('/', authCheck, (req: any, res: any) => {

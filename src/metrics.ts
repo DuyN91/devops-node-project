@@ -2,11 +2,11 @@ import { LevelDB } from './leveldb'
 import WriteStream from 'level-ws'
 
 export class Metric {
-    public timestamp: string;
+    public code: string;
     public value: number;
   
-    constructor(ts: string, v: number) {
-      this.timestamp = ts;
+    constructor(cd: string, v: number) {
+      this.code = cd;
       this.value = v;
     }
 }
@@ -23,15 +23,16 @@ export class MetricsHandler {
         stream.on('error', callback);
         stream.on('close', callback);
         metrics.forEach((m: Metric) => {
-            stream.write({ key: `metric:${key}:${m.timestamp}`, value: m.value })
+            stream.write({ key: `metric:${key}:${m.code}`, value: m.value })
         });
         stream.end()
     }
 
     static get(callback: (error: Error | null, result?: Metric[]) => void) {
         const result = [
-            new Metric('2013-11-04 14:00 UTC', 12),
-            new Metric('2013-11-04 14:30 UTC', 15)
+            new Metric('metric1', 1),
+            new Metric('metric2', 2),
+            new Metric('metric3', 3)
         ];
         callback(null, result);
     }
