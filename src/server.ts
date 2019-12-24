@@ -81,7 +81,7 @@ app.post('/login', (req: any, res: any, next: any) => {
         if (err) {
             next(err)
         }
-        if (result === undefined || !result.validatePassword(req.body.password)) {
+        if (result === undefined || result.validatePassword(req.body.password) === false) {
             res.redirect('/login');
         } else {
             req.session.loggedIn = true;
@@ -91,25 +91,18 @@ app.post('/login', (req: any, res: any, next: any) => {
     });
 });
 
-//signup implementation
+// signup implementation
 app.post('/signup', (req: any, res: any, next: any) => {
-    dbUser.get(req.body.username, (err: Error | null, result?: User) => {
-        if (err) {
-            console.log('failed from start');
-            next(err);
-        } else {
-            var user = new User(req.body.username, req.body.mail, req.body.password)
-            dbUser.save(user, (err: Error | null) => {
-                if (err) {
-                    console.log('signup failed');
-                    throw err;
-                } else {
-                    res.status(200).send();
-                }
-            });
-            console.log('signup successful');
-        }
-    });
+    if (req.body.email != '' && req.body.username != '' && req.body.password != '') {
+        var user = new User(req.body.email, req.body.username, req.body.password);
+        dbUser.save(user, (err: Error | null) => {
+            if (err) {
+                throw err;
+            }
+            res.status(200).send();
+        });
+    }
+    res.redirect('/login');
 });
 
 

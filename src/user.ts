@@ -34,9 +34,13 @@ export class User {
         return this.password;
     };
     
+    // hashed the toValidate password before comparing it
     public validatePassword(toValidate: String): boolean {
-        return false;
-        // return comparison with hashed password
+        if (hashmod.isHashed(toValidate) === this.password) {
+            return true;
+        } else {
+            return false;
+        }
     };
 }
 
