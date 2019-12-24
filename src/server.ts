@@ -101,11 +101,14 @@ app.post('/login', (req: any, res: any, next: any) => {
 
 // signup implementation
 app.post('/signup/newaccount', (req: any, res: any, next: any) => {
+    // verify that we get to that point by displaying a console message
     console.log("signup start");
     if (req.body.mail != '' && req.body.username != '' && req.body.password != '') {
         console.log(req.body.mail+' '+req.body.username+' '+req.body.password);
         var user = new User(req.body.mail, req.body.username, req.body.password);
+        // check the creation of a user object
         console.log("signup user create");
+        // display the user attributes
         console.log(user.username+' '+user.email+' '+user.getPassword());
         dbUser.save(user, (err: Error | null) => {
             if (err) {
