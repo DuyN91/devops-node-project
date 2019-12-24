@@ -9,16 +9,16 @@ These are the steps you need to complete before launching the project.
 
 Node modules that need to be install:
 ```
--npm install
--npm install express
--npm install ejs
--npm install typescript --save-dev
--npm install --save-dev nodemon
--npm install -D ts-node
--npm install -D typescript
--npm install --save encoding-down leveldown levelup level-ws
--npm i --save body-parser
--npm install password-hash
+- npm install
+- npm install express
+- npm install ejs
+- npm install typescript --save-dev
+- npm install --save-dev nodemon
+- npm install -D ts-node
+- npm install -D typescript
+- npm install --save encoding-down leveldown levelup level-ws
+- npm i --save body-parser
+- npm install password-hash
 ```
 
 # Usage intructions
@@ -26,8 +26,8 @@ To have access to the application you need to type `localhost8080` in your brows
 Next to get to the login page you need to add "/login" at the end of the url: `localhost8080/login`.
 After that you have two options: 
 
--to access the signup page, just click on the "Create an account" button. 
--if you want to acces a "profile" page, in the url type: `localhost8080/hello/[name]`. Just put any name in place of [name].
+- to access the signup page, just click on the "Create an account" button. 
+- if you want to access a "profile" page, in the url type: `localhost8080/hello/[name]`. Just put any name in place of [name].
 
 In the case of the signup page, after you enter the user information, just click on the "Create an account" button to get back to the login page.
 
