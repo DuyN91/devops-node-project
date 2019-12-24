@@ -18,6 +18,7 @@ Node modules that need to be install:
 -npm install -D typescript
 -npm install --save encoding-down leveldown levelup level-ws
 -npm i --save body-parser
+-npm install password-hash
 ```
  
  
