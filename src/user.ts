@@ -1,5 +1,6 @@
 import { LevelDB } from "./leveldb";
 import WriteStream from 'level-ws';
+import hashmod from "../node_modules/password-hash"
 
 export class User {
     public username: string;
@@ -9,10 +10,8 @@ export class User {
     constructor(username: string, email: string, password: string) {
         this.username = username;
         this.email = email;
-        
-        var passwordHashed: boolean = false;
 
-        if (!passwordHashed) {
+        if (hashmod.isHashed(password) === false) {
             this.setPassword(password);
         } else {
             this.password = password;
@@ -25,7 +24,10 @@ export class User {
     };
     
     public setPassword(toSet: string): void {
-        // Hash and set password
+        // hashed password
+        var hashedPassword = hashmod.generate(toSet);
+        // set password
+        this.password = hashedPassword;
     };
     
     public getPassword(): string {
