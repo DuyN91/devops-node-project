@@ -6,6 +6,7 @@ import session = require('express-session');
 import levelSession = require('level-session-store');
 import { UserHandler, User } from './user';
 import { stringify } from 'querystring';
+import { write } from 'fs';
 
 const dbUser: UserHandler = new UserHandler('./db/users');
 const dbMet: MetricsHandler = new MetricsHandler('./db/metrics');
@@ -77,30 +78,44 @@ authRouter.get('/logout', (req: any, res: any) => {
 });
 
 app.post('/login', (req: any, res: any, next: any) => {
+    // verify that I does get thre right values from the form
+    console.log(req.body.username+' '+req.body.password);
     dbUser.get(req.body.username, (err: Error | null, result?: User) => {
+        // verify that I manage to get the right data from the db
+        console.log(result?.username+' '+result?.email+' '+result?.getPassword());
         if (err) {
+            console.log("error")
             next(err)
         }
         if (result === undefined || result.validatePassword(req.body.password) === false) {
+            console.log("error user")
             res.redirect('/login');
         } else {
             req.session.loggedIn = true;
             req.session.user = result;
-            res.redirect('/hello/'+result.username);
+            console.log(req.body.username);
+            res.redirect('/hello/'+req.body.username);
         }
     });
 });
 
 // signup implementation
-app.post('/signup', (req: any, res: any, next: any) => {
-    if (req.body.email != '' && req.body.username != '' && req.body.password != '') {
-        var user = new User(req.body.email, req.body.username, req.body.password);
+app.post('/signup/newaccount', (req: any, res: any, next: any) => {
+    console.log("signup start");
+    if (req.body.mail != '' && req.body.username != '' && req.body.password != '') {
+        console.log(req.body.mail+' '+req.body.username+' '+req.body.password);
+        var user = new User(req.body.mail, req.body.username, req.body.password);
+        console.log("signup user create");
+        console.log(user.username+' '+user.email+' '+user.getPassword());
         dbUser.save(user, (err: Error | null) => {
             if (err) {
+                console.log("signup failed")
                 throw err;
             }
-            res.status(200).send();
+            console.log("signup done")
         });
+    } else {
+        res.redirect('/signup');
     }
     res.redirect('/login');
 });

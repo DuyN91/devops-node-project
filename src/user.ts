@@ -52,7 +52,7 @@ export class UserHandler {
     };
 
     public get(username: string, callback: (err: Error | null, result?: User) => void) {
-        this.db.get(`user:${username}`, function (err: Error, data: any) {
+        this.db.get(username, function (err: Error, data: any) {
             if (err) {
                 callback(err)
             } else if (data === undefined) {
@@ -63,14 +63,19 @@ export class UserHandler {
     };
   
     public save(user: User, callback: (err: Error | null) => void) {
-        this.db.put(`user:${user.username}`, `${user.getPassword}:${user.email}`, (err: Error | null) => {
-            callback(err);
+        this.db.put(user.username, `${user.getPassword}:${user.email}`, (err: Error | null) => {
+            if (err) {
+                console.log("save failed")
+                callback(err);
+            }
         });
     };
   
     public delete(username: string, callback: (err: Error | null) => void) {
         this.db.del(username, (err: Error | null) => {
-            callback(err);
+            if (err) {
+                callback(err);
+            }
         });
     };
 }
